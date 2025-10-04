@@ -3,54 +3,80 @@
 <head>
   <meta charset="UTF-8" />
   <title>Telegram Barcode Scanner</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     body, html {
       margin: 0;
       padding: 0;
       height: 100%;
       background: #111;
+      font-family: Arial, sans-serif;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      color: white;
+      color: #fff;
+    }
+    #video-container {
+      position: relative;
+      width: 100%;
+      max-width: 640px;
     }
     video {
       width: 100%;
-      max-width: 640px;
-      transform: scaleX(-1);
       border-radius: 8px;
+      transform: scaleX(-1); /* mirror for rear camera */
+    }
+    #overlay {
+      position: absolute;
+      top: 40%;
+      left: 20%;
+      width: 60%;
+      height: 20%;
+      border: 3px solid rgba(0, 255, 0, 0.6);
+      pointer-events: none;
+      border-radius: 4px;
     }
     #info {
-      margin-top: 1rem;
+      margin-top: 20px;
+      font-size: 1rem;
+      text-align: center;
     }
   </style>
 </head>
 <body>
-  <video id="video" autoplay playsinline></video>
-  <div id="info">Initializing...</div>
+  <div id="video-container">
+    <video id="video" autoplay playsinline></video>
+    <div id="overlay"></div>
+  </div>
+  <div id="info">📷 Point the barcode inside the green box</div>
 
   <script>
-    async function startCamera() {
-      const video = document.getElementById('video');
-      const info = document.getElementById('info');
+    const videoElem = document.getElementById('video');
+    const infoElem = document.getElementById('info');
 
+    async function startCamera() {
       try {
         const stream = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode: 'environment' }
+          video: { facingMode: "environment" } // Use back camera
         });
-        video.srcObject = stream;
-        info.textContent = "Camera is working!";
-      } catch (err) {
-        info.textContent = "❌ Camera error: " + err.message;
-        console.error("Camera error", err);
+        videoElem.srcObject = stream;
+        infoElem.textContent = "✅ Camera started";
+      } catch (error) {
+        console.error("Camera error:", error);
+        infoElem.textContent = "❌ Camera failed: " + error.message;
       }
     }
 
+    // Expand Web App view in Telegram
     if (window.Telegram && Telegram.WebApp) {
       Telegram.WebApp.expand();
+      console.log("Running inside Telegram WebApp");
+    } else {
+      console.log("Running outside Telegram");
     }
 
+    // Start the camera
     startCamera();
   </script>
 </body>
