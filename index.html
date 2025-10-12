@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MTS Survey Form</title>
+<title>Plantilla de Servicio</title>
 <style>
   body { font-family: Arial, sans-serif; padding: 20px; background: #f5f5f5; }
   h2 { text-align: center; }
@@ -16,12 +16,12 @@
 </style>
 </head>
 <body>
-<h2>MTS Survey</h2>
+<h2>Plantilla de Servicio</h2>
 <form id="surveyForm">
   <!-- MTS Bajante -->
   <label for="mts">MTS Bajante <span class="required">*</span></label>
   <select id="mts" name="mts" required>
-    <option value="">Select MTS</option>
+    <option value="">Selecciona MTS</option>
     <option>25</option><option>50</option><option>75</option><option>100</option>
     <option>125</option><option>150</option><option>175</option><option>200</option>
     <option>225</option><option>250</option>
@@ -30,7 +30,7 @@
   <!-- Técnico -->
   <label for="tecnico">Técnico <span class="required">*</span></label>
   <select id="tecnico" name="tecnico" required>
-    <option value="">Select Técnico</option>
+    <option value="">Selecciona Técnico</option>
     <option>Tecnico1</option><option>Tecnico2</option><option>Tecnico3</option>
     <option>Tecnico4</option><option>Tecnico5</option><option>Tecnico6</option>
     <option>Tecnico7</option><option>Tecnico8</option><option>Tecnico9</option>
@@ -43,24 +43,24 @@
   <!-- Orden Liquidada -->
   <label for="orden">Orden Liquidada <span class="required">*</span></label>
   <select id="orden" name="orden" required>
-    <option value="">Select Orden</option>
+    <option value="">Selecciona Orden</option>
     <option>Fibra</option><option>Cobre</option><option>Migración</option>
   </select>
 
   <!-- Tipo de Orden (conditional) -->
   <label for="tipo" id="tipoLabel" style="display:none">Tipo de Orden <span class="required">*</span></label>
   <select id="tipo" name="tipo" style="display:none">
-    <option value="">Select Tipo</option>
+    <option value="">Selecciona Tipo</option>
     <option>Aérea</option><option>Subterranea</option>
   </select>
 
   <!-- Tenativo -->
   <label for="tenativo">Tenativo <span class="required">*</span></label>
-  <input type="text" id="tenativo" name="tenativo" placeholder="10-digit number" required maxlength="10">
+  <input type="text" id="tenativo" name="tenativo" placeholder="10 dígitos" required maxlength="10">
 
   <!-- OS -->
   <label for="os">OS <span class="required">*</span></label>
-  <input type="text" id="os" name="os" placeholder="9-digit number" required maxlength="9">
+  <input type="text" id="os" name="os" placeholder="9 dígitos" required maxlength="9">
 
   <!-- Dirección -->
   <label for="direccion">Dirección <span class="required">*</span></label>
@@ -71,10 +71,10 @@
   <input type="text" id="terminal" name="terminal" required>
 
   <!-- Photo Domicilio -->
-  <label for="photo">Photo Domicilio <span class="required">*</span></label>
+  <label for="photo">Foto del Domicilio <span class="required">*</span></label>
   <input type="file" id="photo" name="photo" accept="image/*" required>
 
-  <button type="submit">Submit</button>
+  <button type="submit">Enviar</button>
 </form>
 
 <script>
@@ -105,7 +105,6 @@
       if(allowedKeys.includes(e.key)) return;
       if(!/[0-9]/.test(e.key) || input.value.length >= maxLength) e.preventDefault();
     });
-
     input.addEventListener("paste", (e) => {
       e.preventDefault();
       const paste = (e.clipboardData || window.clipboardData).getData("text");
@@ -121,11 +120,10 @@
   document.getElementById("surveyForm").addEventListener("submit", (e) => {
     e.preventDefault();
 
-    // Validate required fields
     const requiredFields = document.querySelectorAll("#surveyForm [required]");
     for(let field of requiredFields) {
       if(!field.value) {
-        alert("Please fill all required fields (*)");
+        alert("Por favor completa todos los campos obligatorios (*)");
         field.focus();
         return;
       }
