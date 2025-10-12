@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MTS Survey Form</title>
+<style>
+  body { font-family: Arial, sans-serif; padding: 20px; background: #f5f5f5; }
+  h2 { text-align: center; }
+  form { background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+  label { display: block; margin-top: 15px; font-weight: bold; }
+  input, select { width: 100%; padding: 8px; margin-top: 5px; border-radius: 5px; border: 1px solid #ccc; box-sizing: border-box; }
+  button { margin-top: 20px; padding: 10px; width: 100%; border: none; background-color: #0088cc; color: white; font-size: 16px; border-radius: 5px; cursor: pointer; }
+  button:hover { background-color: #006699; }
+</style>
+</head>
+<body>
+<h2>MTS Survey</h2>
+<form id="surveyForm">
+  <!-- MTS Bajante -->
+  <label for="mts">MTS Bajante</label>
+  <select id="mts" name="mts" required>
+    <option value="">Select MTS</option>
+    <option>25</option><option>50</option><option>75</option><option>100</option>
+    <option>125</option><option>150</option><option>175</option><option>200</option>
+    <option>225</option><option>250</option>
+  </select>
+
+  <!-- Técnico -->
+  <label for="tecnico">Técnico</label>
+  <select id="tecnico" name="tecnico" required>
+    <option value="">Select Técnico</option>
+    <option>Tecnico1</option><option>Tecnico2</option><option>Tecnico3</option>
+    <option>Tecnico4</option><option>Tecnico5</option><option>Tecnico6</option>
+    <option>Tecnico7</option><option>Tecnico8</option><option>Tecnico9</option>
+  </select>
+
+  <!-- Día de Servicio -->
+  <label for="fecha">Día de Servicio</label>
+  <input type="date" id="fecha" name="fecha" required>
+
+  <!-- Orden Liquidada -->
+  <label for="orden">Orden Liquidada</label>
+  <select id="orden" name="orden" required>
+    <option value="">Select Orden</option>
+    <option>Fibra</option><option>Cobre</option><option>Migración</option>
+  </select>
+
+  <!-- Tipo de Orden (conditional) -->
+  <label for="tipo" id="tipoLabel" style="display:none">Tipo de Orden</label>
+  <select id="tipo" name="tipo" style="display:none">
+    <option value="">Select Tipo</option>
+    <option>Aérea</option><option>Subterranea</option>
+  </select>
+
+  <!-- Tenativo -->
+  <label for="tenativo">Tenativo</label>
+  <input type="text" id="tenativo" name="tenativo" pattern="\d{10}" placeholder="10-digit number" required>
+
+  <!-- OS -->
+  <label for="os">OS</label>
+  <input type="text" id="os" name="os" pattern="\d{9}" placeholder="9-digit number" required>
+
+  <!-- Dirección -->
+  <label for="direccion">Dirección</label>
+  <input type="text" id="direccion" name="direccion" required>
+
+  <!-- Terminal -->
+  <label for="terminal">Terminal</label>
+  <input type="text" id="terminal" name="terminal" required>
+
+  <!-- Photo Domicilio -->
+  <label for="photo">Photo Domicilio</label>
+  <input type="file" id="photo" name="photo" accept="image/*" required>
+
+  <button type="submit">Submit</button>
+</form>
+
+<script>
+  // Initialize Telegram WebApp
+  const tg = window.Telegram.WebApp;
+
+  // Show/hide Tipo de Orden based on Orden selection
+  document.getElementById("orden").addEventListener("change", (e) => {
+    const tipoLabel = document.getElementById("tipoLabel");
+    const tipoSelect = document.getElementById("tipo");
+    if(e.target.value === "Fibra" || e.target.value === "Migración") {
+      tipoLabel.style.display = "block";
+      tipoSelect.style.display = "block";
+      tipoSelect.required = true;
+    } else {
+      tipoLabel.style.display = "none";
+      tipoSelect.style.display = "none";
+      tipoSelect.required = false;
+      tipoSelect.value = "";
+    }
+  });
+
+  // Handle form submission
+  document.getElementById("surveyForm").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const data = {};
+    formData.forEach((value, key) => data[key] = value);
+    tg.sendData(JSON.stringify(data));
+  });
+</script>
+</body>
+</html>
