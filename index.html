@@ -6,7 +6,7 @@
 <title>Plantilla de Servicio</title>
 <style>
   body { font-family: Arial, sans-serif; padding: 20px; background: #f5f5f5; }
-  h2 { text-align: center; }
+  h2 { text-align: center; margin-bottom: 20px; }
   form { background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
   label { display: block; margin-top: 15px; font-weight: bold; }
   label span.required { color: red; margin-left: 5px; }
@@ -44,15 +44,20 @@
   <label for="orden">Orden Liquidada <span class="required">*</span></label>
   <select id="orden" name="orden" required>
     <option value="">Selecciona Orden</option>
-    <option>Fibra</option><option>Cobre</option><option>Migración</option>
+    <option>Fibra</option>
+    <option>Cobre</option>
+    <option>Migración</option>
   </select>
 
-  <!-- Tipo de Orden (conditional) -->
-  <label for="tipo" id="tipoLabel" style="display:none">Tipo de Orden <span class="required">*</span></label>
-  <select id="tipo" name="tipo" style="display:none">
-    <option value="">Selecciona Tipo</option>
-    <option>Aérea</option><option>Subterranea</option>
-  </select>
+  <!-- Tipo de Orden (dropdown) -->
+  <div id="tipoOrdenField" style="margin-top:15px; display:block;">
+    <label for="tipoDe">Tipo de Orden <span class="required">*</span></label>
+    <select id="tipoDe" name="tipoDe" required>
+      <option value="">Selecciona Tipo</option>
+      <option>Aérea</option>
+      <option>Subterránea</option>
+    </select>
+  </div>
 
   <!-- Tenativo -->
   <label for="tenativo">Tenativo <span class="required">*</span></label>
@@ -78,27 +83,29 @@
 </form>
 
 <script>
-  const tg = window.Telegram.WebApp;
+document.addEventListener("DOMContentLoaded", () => {
+  const tg = window.Telegram?.WebApp;
 
-  // Show/hide Tipo de Orden based on Orden selection
   const ordenSelect = document.getElementById("orden");
-  const tipoLabel = document.getElementById("tipoLabel");
-  const tipoSelect = document.getElementById("tipo");
+  const tipoOrdenField = document.getElementById("tipoOrdenField");
+  const tipoDe = document.getElementById("tipoDe");
 
-  ordenSelect.addEventListener("change", (e) => {
-    if(e.target.value === "Fibra" || e.target.value === "Migración") {
-      tipoLabel.style.display = "block";
-      tipoSelect.style.display = "block";
-      tipoSelect.required = true;
+  // Show/hide Tipo de Orden only if Cobre is selected
+  function updateTipoOrdenVisibility() {
+    if (ordenSelect.value === "Cobre") {
+      tipoOrdenField.style.display = "none";   // hide
+      tipoDe.value = "";                        // clear selection
+      tipoDe.required = false;
     } else {
-      tipoLabel.style.display = "none";
-      tipoSelect.style.display = "none";
-      tipoSelect.required = false;
-      tipoSelect.value = "";
+      tipoOrdenField.style.display = "block";  // show for all other options including ""
+      tipoDe.required = true;
     }
-  });
+  }
 
-  // Strict digit-only input enforcement
+  updateTipoOrdenVisibility();
+  ordenSelect.addEventListener("change", updateTipoOrdenVisibility);
+
+  // Digit-only enforcement
   function enforceDigitsStrict(input, maxLength) {
     input.addEventListener("keydown", (e) => {
       const allowedKeys = ["Backspace","Delete","ArrowLeft","ArrowRight","Tab"];
@@ -116,10 +123,9 @@
   enforceDigitsStrict(document.getElementById("tenativo"), 10);
   enforceDigitsStrict(document.getElementById("os"), 9);
 
-  // Handle form submission
+  // Form submission
   document.getElementById("surveyForm").addEventListener("submit", (e) => {
     e.preventDefault();
-
     const requiredFields = document.querySelectorAll("#surveyForm [required]");
     for(let field of requiredFields) {
       if(!field.value) {
@@ -129,12 +135,13 @@
       }
     }
 
-    // Send data to Telegram
     const formData = new FormData(e.target);
     const data = {};
     formData.forEach((value, key) => data[key] = value);
-    tg.sendData(JSON.stringify(data));
+    if(tg) tg.sendData(JSON.stringify(data));
+    else console.log("Form data:", data);
   });
+});
 </script>
 </body>
 </html>
