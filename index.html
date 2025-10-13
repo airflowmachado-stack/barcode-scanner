@@ -81,10 +81,18 @@
 
   <button type="submit" style="margin-top:20px;">Enviar</button>
 </form>
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
 <script>
-document.addEventListener("DOMContentLoaded", () => {
   const tg = window.Telegram?.WebApp;
+
+  console.log("Telegram WebApp object:", tg);
+
+  // Optional quick debug with alert (useful if you don't have remote inspector)
+  if(!tg) {
+    alert("⚠️ Not running inside Telegram WebApp!");
+  } else {
+    alert("✅ Running inside Telegram WebApp. User ID: " + tg.initDataUnsafe?.user?.id);
+  }
+document.addEventListener("DOMContentLoaded", () => {
 
   const ordenSelect = document.getElementById("orden");
   const tipoOrdenField = document.getElementById("tipoOrdenField");
