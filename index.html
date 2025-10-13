@@ -156,11 +156,11 @@ document.addEventListener("DOMContentLoaded", () => {
     };
     data['submission_id'] = crypto.randomUUID();
     // Send to Telegram if available, else log to console
-    if (window.Telegram?.WebApp) {
+    if (tg) {
         console.log("Form data:", JSON.stringify(data));
-        window.Telegram.WebApp.sendData(JSON.stringify(data));
+        tg.sendData(JSON.stringify(data));
         alert("✅ Form data logged in console.");
-        window.Telegram.WebApp.close();  // <-- closes the WebApp, returns to chat
+        tg.close();  // <-- closes the WebApp, returns to chat
     } else {
         console.log("Form data:", data);
         alert("(X) Form data logged in console (not running inside Telegram).");
