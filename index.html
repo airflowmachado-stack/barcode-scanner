@@ -79,9 +79,9 @@
   <label for="photo">Foto del Domicilio <span class="required">*</span></label>
   <input type="file" id="photo" name="photo" accept="image/*" required>
 
-  <button type="submit">Enviar</button>
+  <button type="submit" style="margin-top:20px;">Enviar</button>
 </form>
-
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
   const tg = window.Telegram?.WebApp;
@@ -134,10 +134,27 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
     }
-
-    const formData = new FormData(e.target);
-    const data = {};
-    formData.forEach((value, key) => data[key] = value);
+    const fileInput = document.querySelector('input[name="photo"]');
+    let photoUrl = "";
+    if(fileInput.files.length > 0) {
+        // For now, just send the file name; in production, use GCS or your backend
+        photoUrl = fileInput.files[0].name;
+    }
+    let modemNumber = "TEST_MODEM";
+    const data = {
+        fecha: document.querySelector('input[name="fecha"]').value,
+        orden: ordenSelect.value,
+        tipo: document.querySelector('select[name="tipoDe"]').value,
+        mts: document.querySelector('select[name="mts"]').value,
+        tecnico: document.querySelector('select[name="tecnico"]').value,
+        tenativo: document.querySelector('input[name="tenativo"]').value,
+        os: document.querySelector('input[name="os"]').value,
+        direccion: document.querySelector('input[name="direccion"]').value,
+        terminal: document.querySelector('input[name="terminal"]').value,
+        ont: modemNumber,
+        photo: photoUrl
+    };
+    console.log("Form data:", data);
     if(tg) tg.sendData(JSON.stringify(data));
     else console.log("Form data:", data);
   });
