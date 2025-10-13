@@ -171,7 +171,7 @@ document.addEventListener("DOMContentLoaded", () => {
     data['submission_id'] = crypto.randomUUID();
     // Send to Telegram if available, else log to console
     console.log("tg object:", window.Telegram?.WebApp);
-    alert(JSON.stringify(window.Telegram?.WebApp));
+    // alert(JSON.stringify(window.Telegram?.WebApp));
     if (tg) {
         console.log("Form data:", JSON.stringify(data));
         tg.sendData(JSON.stringify(data));
