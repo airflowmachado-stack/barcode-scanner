@@ -159,10 +159,11 @@ document.addEventListener("DOMContentLoaded", () => {
     if (window.Telegram?.WebApp) {
         console.log("Form data:", JSON.stringify(data));
         window.Telegram.WebApp.sendData(JSON.stringify(data));
-        alert("✅ Form data logged in console (not running inside Telegram).");
+        alert("✅ Form data logged in console.");
+        window.Telegram.WebApp.close();  // <-- closes the WebApp, returns to chat
     } else {
         console.log("Form data:", data);
-        alert("Error.");
+        alert("(X) Form data logged in console (not running inside Telegram).");
     }
   });
 });
