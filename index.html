@@ -172,20 +172,26 @@ document.addEventListener("DOMContentLoaded", () => {
     // Send to Telegram if available, else log to console
     console.log("tg object:", window.Telegram?.WebApp);
     console.log("JSON:", JSON.stringify(data));
+
+    try {
     const response = await fetch("https://unseized-submuscularly-janeen.ngrok-free.dev/submit", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data)
     });
+
+    // don't read the body more than once
+    if (!response.ok) throw new Error("HTTPS error " + response.status);
     
     const result = await response.json();
-    console.log("Response:",response.json())
-    if (result.success) {
-      alert("✅ Datos enviados correctamente.");
-      tg.close();  // closes Mini App and returns to chat
-    } else {
-      alert("⚠️ Error al enviar datos. Verifique su internet");
-    }
+    console.log("Response:",result)
+    alert("✅ Datos enviados correctamente.");
+    tg.close();  // closes Mini App and returns to chat
+
+    } catch (err) {
+    console.error("❌ Error submitting form:", err);
+    alert("⚠️ No se pudo enviar el formulario");
+  }
 
   });
 });
