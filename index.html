@@ -170,16 +170,17 @@ document.addEventListener("DOMContentLoaded", () => {
     };
     data['submission_id'] = crypto.randomUUID();
     // Send to Telegram if available, else log to console
-    console.log("tg object:", window.Telegram?.WebApp);
-    console.log("JSON:", JSON.stringify(data));
-
+    //console.log("tg object:", window.Telegram?.WebApp);
+    // console.log("JSON:", JSON.stringify(data));
+    alert("Ready to Submit");
     try {
     const response = await fetch("https://unseized-submuscularly-janeen.ngrok-free.dev/submit", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data)
     });
-
+    alert("Termino el Submit",response);
+    alert(response.ok);
     // don't read the body more than once
     if (!response.ok) throw new Error("HTTPS error " + response.status);
     
