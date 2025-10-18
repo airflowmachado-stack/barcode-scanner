@@ -93,6 +93,7 @@ const modemNumber = params.get("ont");
  
 document.addEventListener("DOMContentLoaded", () => {
   const tg = window.Telegram?.WebApp;
+  const modemNumber = params.get("ont"); 
   if (modemNumber) {
       document.getElementById("modem-number").textContent = modemNumber;
     } else {
@@ -165,7 +166,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // For now, just send the file name; in production, use GCS or your backend
         photoUrl = fileInput.files[0].name;
     }
-    let modemNumber = "TEST_MODEM";
+    // let modemNumber = "TEST_MODEM";
     const data = {
         fecha: document.querySelector('input[name="fecha"]').value,
         orden: ordenSelect.value,
