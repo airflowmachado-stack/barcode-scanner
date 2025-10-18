@@ -18,6 +18,8 @@
 </head>
 <body>
 <h2>Plantilla de Servicio</h2>
+<h2>Modem Number:</h2>
+<p id="modem-number">Loading...</p>
 <form id="surveyForm">
   <!-- MTS Bajante -->
   <label for="mts">MTS Bajante <span class="required">*</span></label>
@@ -83,10 +85,19 @@
   <button type="submit" style="margin-top:20px;">Enviar</button>
 </form>
 <script>
-  
+// Parse the URL query parameters
+    const params = new URLSearchParams(window.location.search);
+
+// Get the 'ont' parameter (your modem number)
+const modemNumber = params.get("ont"); 
+ 
 document.addEventListener("DOMContentLoaded", () => {
   const tg = window.Telegram?.WebApp;
-
+  if (modemNumber) {
+      document.getElementById("modem-number").textContent = modemNumber;
+    } else {
+      document.getElementById("modem-number").textContent = "No modem number provided.";
+  }
   console.log("Telegram WebApp object:", tg);
 
   tg.ready(() => {
