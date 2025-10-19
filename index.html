@@ -166,7 +166,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // For now, just send the file name; in production, use GCS or your backend
         photoUrl = fileInput.files[0].name;
     }
-    // let modemNumber = "TEST_MODEM";
+    
     const data = {
         fecha: document.querySelector('input[name="fecha"]').value,
         orden: ordenSelect.value,
@@ -184,6 +184,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Send to Telegram if available, else log to console
     //console.log("tg object:", window.Telegram?.WebApp);
     // console.log("JSON:", JSON.stringify(data));
+    alert(modemNumber);
     alert("Ready to Submit");
     try {
     const response = await fetch("https://unseized-submuscularly-janeen.ngrok-free.dev/submit", {
@@ -211,3 +212,4 @@ document.addEventListener("DOMContentLoaded", () => {
 </script>
 </body>
 </html>
+
